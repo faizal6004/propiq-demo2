@@ -1,0 +1,406 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>PropIQ — AI Real Estate Lead Intelligence</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,700;0,800;0,900;1,400;1,700&family=Outfit:wght@300;400;500;600;700&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --cream: #f4f1eb;
+    --cream-dark: #ede9e0;
+    --black: #111110;
+    --dark: #1e1e1c;
+    --muted: #888880;
+    --orange: #e8861a;
+    --orange-light: #f0a040;
+    --orange-dim: rgba(232,134,26,0.12);
+    --border: #d8d3c8;
+    --hot: #e84a3a;
+    --warm: #e8961a;
+    --cold: #3a8ee8;
+  }
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  body { background: var(--cream); color: var(--black); font-family: 'Outfit', sans-serif; min-height: 100vh; overflow-x: hidden; }
+
+  /* NAV */
+  nav { display: flex; align-items: center; justify-content: space-between; padding: 1.2rem 3.5rem; background: var(--cream); border-bottom: 1px solid var(--border); position: sticky; top: 0; z-index: 90; }
+  .logo { font-weight: 700; font-size: 1.15rem; color: var(--black); display: flex; align-items: center; gap: 0.5rem; }
+  .logo-dot { width: 28px; height: 28px; background: var(--orange); border-radius: 50%; display: flex; align-items: center; justify-content: center; color: white; font-size: 0.7rem; font-weight: 700; }
+  nav ul { display: flex; gap: 2rem; list-style: none; align-items: center; }
+  nav ul li a { color: var(--dark); text-decoration: none; font-size: 0.88rem; font-weight: 500; transition: color 0.2s; }
+  nav ul li a:hover { color: var(--orange); }
+  .nav-right { display: flex; align-items: center; gap: 1.5rem; }
+  .nav-link { font-size: 0.85rem; color: var(--muted); text-decoration: none; font-weight: 500; }
+  .btn-primary { background: var(--orange); color: white; border: none; padding: 0.6rem 1.4rem; border-radius: 6px; font-family: 'Outfit', sans-serif; font-size: 0.85rem; font-weight: 600; cursor: pointer; transition: all 0.2s; }
+  .btn-primary:hover { background: var(--orange-light); transform: translateY(-1px); }
+
+  /* HERO */
+  .hero { display: grid; grid-template-columns: 1fr 1fr; min-height: calc(100vh - 65px); overflow: hidden; }
+  .hero-left { padding: 5rem 3.5rem 4rem; display: flex; flex-direction: column; justify-content: center; }
+  .hero-tag { display: inline-flex; align-items: center; gap: 0.5rem; background: var(--orange-dim); border: 1px solid rgba(232,134,26,0.25); color: var(--orange); font-size: 0.75rem; font-weight: 600; letter-spacing: 0.08em; text-transform: uppercase; padding: 0.4rem 0.9rem; border-radius: 99px; margin-bottom: 1.8rem; width: fit-content; }
+  .hero-tag::before { content: ''; width: 6px; height: 6px; background: var(--orange); border-radius: 50%; animation: pulse 2s infinite; }
+  @keyframes pulse { 0%,100%{opacity:1;transform:scale(1)}50%{opacity:.5;transform:scale(.8)} }
+  h1 { font-family: 'Playfair Display', serif; font-size: 4.2rem; line-height: 1.08; font-weight: 800; color: var(--black); margin-bottom: 1.5rem; }
+  h1 em { font-style: italic; color: var(--orange); }
+  .hero-desc { font-size: 1rem; color: var(--muted); line-height: 1.7; max-width: 420px; margin-bottom: 2.5rem; }
+  .hero-actions { display: flex; align-items: center; gap: 1.2rem; margin-bottom: 3rem; }
+  .btn-outline { background: transparent; border: 1.5px solid var(--border); color: var(--dark); padding: 0.7rem 1.5rem; border-radius: 6px; font-family: 'Outfit', sans-serif; font-size: 0.88rem; font-weight: 500; cursor: pointer; transition: all 0.2s; }
+  .btn-outline:hover { border-color: var(--orange); color: var(--orange); }
+  .hero-stats { display: flex; gap: 2.5rem; padding-top: 2rem; border-top: 1px solid var(--border); }
+  .stat-num { font-size: 1.6rem; font-weight: 700; color: var(--black); line-height: 1; margin-bottom: 0.3rem; }
+  .stat-label { font-size: 0.78rem; color: var(--muted); }
+
+  /* HERO RIGHT */
+  .hero-right { position: relative; overflow: hidden; background: var(--cream-dark); }
+  .hero-img-placeholder { width: 100%; height: 100%; background: linear-gradient(135deg, #d4c9b4 0%, #b8aa96 40%, #9e8e78 100%); display: flex; align-items: center; justify-content: center; position: relative; overflow: hidden; }
+  .hero-img-placeholder::before { content: ''; position: absolute; inset: 0; background: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 800 600'%3E%3Crect fill='%23c4b89a' width='800' height='600'/%3E%3Crect fill='%23a89878' x='100' y='200' width='600' height='350' rx='8'/%3E%3Crect fill='%23786848' x='120' y='220' width='560' height='310' rx='4'/%3E%3Crect fill='%23d4a860' x='140' y='240' width='260' height='270'/%3E%3Crect fill='%23b89040' x='420' y='240' width='240' height='130'/%3E%3Crect fill='%23c8a850' x='420' y='380' width='240' height='130'/%3E%3Crect fill='%23e8d0a0' x='160' y='400' width='60' height='110'/%3E%3Crect fill='%23604020' x='180' y='300' width='80' height='60'/%3E%3Cellipse fill='%23608040' cx='80' cy='580' rx='60' ry='80'/%3E%3Cellipse fill='%23508030' cx='720' cy='560' rx='80' ry='100'/%3E%3C/svg%3E") center/cover; }
+  .property-card-float { position: absolute; bottom: 2.5rem; right: 2rem; background: white; border-radius: 12px; padding: 1rem 1.3rem; box-shadow: 0 20px 60px rgba(0,0,0,0.18); min-width: 220px; animation: floatUp 0.8s ease 0.3s both; }
+  @keyframes floatUp { from{opacity:0;transform:translateY(20px)}to{opacity:1;transform:translateY(0)} }
+  .prop-card-label { font-size: 0.7rem; font-weight: 600; color: var(--muted); text-transform: uppercase; letter-spacing: 0.08em; margin-bottom: 0.3rem; }
+  .prop-card-name { font-size: 0.95rem; font-weight: 700; color: var(--black); margin-bottom: 0.2rem; }
+  .prop-card-desc { font-size: 0.75rem; color: var(--muted); margin-bottom: 0.8rem; }
+  .prop-card-price { display: flex; align-items: center; justify-content: space-between; }
+  .price-tag { background: var(--black); color: white; font-size: 0.78rem; font-weight: 600; padding: 0.3rem 0.7rem; border-radius: 4px; font-family: 'DM Mono', monospace; }
+  .prop-nav-btns { display: flex; gap: 0.4rem; }
+  .prop-nav-btn { width: 28px; height: 28px; border-radius: 50%; border: 1px solid var(--border); background: white; cursor: pointer; display: flex; align-items: center; justify-content: center; font-size: 0.7rem; color: var(--muted); }
+  .prop-nav-btn.active { background: var(--orange); border-color: var(--orange); color: white; }
+
+  /* FEATURES */
+  .features { padding: 5rem 3.5rem; display: grid; grid-template-columns: 1fr 1fr; gap: 5rem; align-items: center; }
+  .features-left h2 { font-family: 'Playfair Display', serif; font-size: 2.8rem; font-weight: 800; line-height: 1.15; margin-bottom: 1rem; }
+  .features-left h2 span { color: var(--orange); font-style: italic; }
+  .features-left p { font-size: 0.95rem; color: var(--muted); line-height: 1.75; max-width: 420px; margin-bottom: 2rem; }
+  .feat-stats { display: flex; gap: 1rem; flex-wrap: wrap; }
+  .feat-stat { background: white; border: 1px solid var(--border); border-radius: 10px; padding: 1rem 1.3rem; }
+  .feat-stat-num { font-size: 1.5rem; font-weight: 700; color: var(--black); }
+  .feat-stat-label { font-size: 0.72rem; color: var(--muted); margin-top: 0.2rem; }
+  .features-right { display: flex; flex-direction: column; gap: 1.2rem; }
+  .feature-card { background: white; border: 1px solid var(--border); border-radius: 12px; padding: 1.4rem 1.6rem; display: flex; gap: 1.2rem; align-items: flex-start; transition: all 0.25s; }
+  .feature-card:hover { border-color: var(--orange); box-shadow: 0 8px 30px rgba(232,134,26,0.1); transform: translateX(4px); }
+  .feat-icon { width: 44px; height: 44px; background: var(--orange-dim); border-radius: 10px; display: flex; align-items: center; justify-content: center; font-size: 1.2rem; flex-shrink: 0; }
+  .feat-title { font-size: 0.95rem; font-weight: 700; color: var(--black); margin-bottom: 0.3rem; }
+  .feat-desc { font-size: 0.82rem; color: var(--muted); line-height: 1.6; }
+  .feat-arrow { margin-left: auto; color: var(--muted); font-size: 1rem; align-self: center; }
+
+  /* SEARCH */
+  .search-section { background: var(--cream-dark); padding: 4rem 3.5rem; border-top: 1px solid var(--border); border-bottom: 1px solid var(--border); }
+  .search-section h3 { font-family: 'Playfair Display', serif; font-size: 2rem; font-weight: 800; text-align: center; margin-bottom: 0.5rem; }
+  .search-section h3 span { color: var(--orange); font-style: italic; }
+  .search-section p { text-align: center; color: var(--muted); font-size: 0.88rem; margin-bottom: 2rem; }
+  .search-bar { display: flex; background: white; border: 1.5px solid var(--border); border-radius: 12px; overflow: hidden; max-width: 800px; margin: 0 auto; box-shadow: 0 8px 30px rgba(0,0,0,0.08); }
+  .search-segment { flex: 1; padding: 1rem 1.3rem; border-right: 1px solid var(--border); }
+  .search-segment:last-of-type { border-right: none; }
+  .search-segment label { display: block; font-size: 0.68rem; font-weight: 600; color: var(--muted); text-transform: uppercase; letter-spacing: 0.08em; margin-bottom: 0.25rem; }
+  .search-segment select { width: 100%; border: none; outline: none; font-family: 'Outfit', sans-serif; font-size: 0.88rem; color: var(--dark); background: transparent; cursor: pointer; }
+  .search-btn { background: var(--orange); color: white; border: none; padding: 0 1.8rem; font-family: 'Outfit', sans-serif; font-size: 0.88rem; font-weight: 600; cursor: pointer; transition: background 0.2s; }
+  .search-btn:hover { background: var(--orange-light); }
+
+  /* CHAT FAB */
+  .chat-trigger { position: fixed; bottom: 2rem; right: 2rem; z-index: 999; display: flex; flex-direction: column; align-items: flex-end; gap: 0.8rem; }
+  .chat-bubble-hint { background: white; border: 1px solid var(--border); border-radius: 20px 20px 4px 20px; padding: 0.7rem 1rem; font-size: 0.8rem; color: var(--dark); font-weight: 500; box-shadow: 0 4px 20px rgba(0,0,0,0.1); animation: slideInHint 0.5s ease 1.5s both; max-width: 200px; text-align: center; line-height: 1.4; }
+  @keyframes slideInHint { from{opacity:0;transform:translateY(10px)}to{opacity:1;transform:translateY(0)} }
+  .chat-fab { width: 60px; height: 60px; background: var(--orange); border: none; border-radius: 50%; cursor: pointer; display: flex; align-items: center; justify-content: center; box-shadow: 0 8px 30px rgba(232,134,26,0.45); transition: all 0.25s; position: relative; }
+  .chat-fab:hover { transform: scale(1.08); }
+  .notif-dot { position: absolute; top: -2px; right: -2px; width: 14px; height: 14px; background: var(--hot); border-radius: 50%; border: 2px solid var(--cream); animation: pulseDot 2s infinite; }
+  @keyframes pulseDot { 0%,100%{transform:scale(1)}50%{transform:scale(1.3)} }
+
+  /* CHAT WINDOW */
+  .chat-window { position: fixed; bottom: 6rem; right: 2rem; width: 380px; height: 560px; background: white; border-radius: 18px; border: 1px solid var(--border); box-shadow: 0 30px 80px rgba(0,0,0,0.18); display: flex; flex-direction: column; overflow: hidden; z-index: 998; transform-origin: bottom right; transition: all 0.3s cubic-bezier(0.34,1.56,0.64,1); }
+  .chat-window.hidden { transform: scale(0.85) translateY(20px); opacity: 0; pointer-events: none; }
+  .chat-header { background: var(--black); padding: 1rem 1.3rem; display: flex; align-items: center; gap: 0.9rem; flex-shrink: 0; }
+  .chat-avatar { width: 38px; height: 38px; background: var(--orange); border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 1rem; flex-shrink: 0; }
+  .chat-agent-name { font-size: 0.88rem; font-weight: 700; color: white; line-height: 1.2; }
+  .chat-agent-status { font-size: 0.7rem; color: #4ade80; display: flex; align-items: center; gap: 0.35rem; }
+  .chat-agent-status::before { content:''; width:5px; height:5px; background:#4ade80; border-radius:50%; }
+  .chat-close { margin-left: auto; background: none; border: none; color: rgba(255,255,255,0.6); cursor: pointer; font-size: 1.1rem; padding: 0.2rem; line-height: 1; }
+  .chat-close:hover { color: white; }
+  .score-badge { display: none; align-items: center; gap: 0.4rem; padding: 0.3rem 0.7rem; border-radius: 99px; font-size: 0.7rem; font-weight: 700; letter-spacing: 0.06em; margin-left: auto; margin-right: 0.5rem; }
+  .score-badge.show { display: flex; }
+  .score-badge.hot { background: rgba(232,74,58,0.2); color: #e84a3a; border: 1px solid rgba(232,74,58,0.3); }
+  .score-badge.warm { background: rgba(232,150,26,0.2); color: #e8961a; border: 1px solid rgba(232,150,26,0.3); }
+  .score-badge.cold { background: rgba(58,142,232,0.2); color: #3a8ee8; border: 1px solid rgba(58,142,232,0.3); }
+  .chat-messages { flex: 1; overflow-y: auto; padding: 1.2rem; display: flex; flex-direction: column; gap: 0.9rem; background: #fafaf8; scroll-behavior: smooth; }
+  .chat-messages::-webkit-scrollbar { width: 4px; }
+  .chat-messages::-webkit-scrollbar-thumb { background: var(--border); border-radius: 4px; }
+  .msg { display: flex; gap: 0.6rem; animation: msgIn 0.3s ease both; }
+  @keyframes msgIn { from{opacity:0;transform:translateY(10px)}to{opacity:1;transform:translateY(0)} }
+  .msg.user { flex-direction: row-reverse; }
+  .msg-avatar { width: 28px; height: 28px; border-radius: 50%; background: var(--orange); display: flex; align-items: center; justify-content: center; font-size: 0.7rem; color: white; flex-shrink: 0; margin-top: 2px; }
+  .msg.user .msg-avatar { background: var(--black); }
+  .msg-bubble { max-width: 75%; padding: 0.7rem 1rem; border-radius: 14px; font-size: 0.85rem; line-height: 1.6; color: var(--dark); background: white; border: 1px solid var(--border); border-bottom-left-radius: 4px; }
+  .msg.user .msg-bubble { background: var(--black); color: white; border-color: var(--black); border-radius: 14px; border-bottom-right-radius: 4px; border-bottom-left-radius: 14px; }
+  .options-row { display: flex; flex-wrap: wrap; gap: 0.5rem; padding: 0 0.4rem; animation: msgIn 0.3s ease 0.1s both; }
+  .opt-btn { background: white; border: 1.5px solid var(--border); color: var(--dark); padding: 0.45rem 0.9rem; border-radius: 99px; font-family: 'Outfit', sans-serif; font-size: 0.78rem; font-weight: 500; cursor: pointer; transition: all 0.2s; }
+  .opt-btn:hover { border-color: var(--orange); color: var(--orange); background: var(--orange-dim); }
+  .opt-btn:disabled { opacity: 0.4; cursor: default; pointer-events: none; }
+  .opt-btn.selected { background: var(--orange); border-color: var(--orange); color: white; }
+  .typing { display: flex; gap: 0.6rem; animation: msgIn 0.3s ease both; }
+  .typing-dots { background: white; border: 1px solid var(--border); border-radius: 14px; border-bottom-left-radius: 4px; padding: 0.75rem 1rem; display: flex; gap: 4px; align-items: center; }
+  .typing-dot { width: 6px; height: 6px; background: var(--muted); border-radius: 50%; animation: typingDot 1.2s infinite; }
+  .typing-dot:nth-child(2) { animation-delay: 0.2s; }
+  .typing-dot:nth-child(3) { animation-delay: 0.4s; }
+  @keyframes typingDot { 0%,80%,100%{transform:translateY(0);opacity:.4}40%{transform:translateY(-5px);opacity:1} }
+  .score-card { background: white; border: 1.5px solid var(--border); border-radius: 14px; padding: 1rem 1.1rem; font-size: 0.82rem; animation: msgIn 0.3s ease both; }
+  .score-card-title { font-size: 0.7rem; font-weight: 600; text-transform: uppercase; letter-spacing: 0.08em; color: var(--muted); margin-bottom: 0.6rem; }
+  .score-tier { display: flex; align-items: center; gap: 0.6rem; margin-bottom: 0.8rem; }
+  .score-tier-badge { font-size: 0.95rem; font-weight: 800; letter-spacing: 0.06em; padding: 0.25rem 0.7rem; border-radius: 6px; }
+  .tier-hot { background: rgba(232,74,58,0.12); color: var(--hot); }
+  .tier-warm { background: rgba(232,150,26,0.12); color: var(--warm); }
+  .tier-cold { background: rgba(58,142,232,0.12); color: var(--cold); }
+  .score-detail { font-size: 0.8rem; color: var(--muted); line-height: 1.6; }
+  .score-bar-wrap { margin: 0.7rem 0; background: var(--cream-dark); border-radius: 99px; height: 6px; overflow: hidden; }
+  .score-bar { height: 100%; border-radius: 99px; transition: width 1s ease; }
+  .chat-input-area { padding: 0.9rem 1rem; border-top: 1px solid var(--border); background: white; display: flex; gap: 0.6rem; align-items: center; flex-shrink: 0; }
+  .chat-input { flex: 1; border: 1.5px solid var(--border); background: var(--cream); border-radius: 99px; padding: 0.6rem 1rem; font-family: 'Outfit', sans-serif; font-size: 0.85rem; color: var(--dark); outline: none; transition: border-color 0.2s; }
+  .chat-input:focus { border-color: var(--orange); }
+  .chat-input::placeholder { color: var(--muted); }
+  .chat-send { width: 38px; height: 38px; background: var(--orange); border: none; border-radius: 50%; cursor: pointer; display: flex; align-items: center; justify-content: center; color: white; transition: all 0.2s; flex-shrink: 0; }
+  .chat-send:hover { background: var(--orange-light); transform: scale(1.05); }
+  .chat-send:disabled { opacity: 0.5; cursor: default; transform: none; }
+
+  @media (max-width: 768px) {
+    nav { padding: 1rem 1.2rem; } nav ul { display: none; }
+    .hero { grid-template-columns: 1fr; } .hero-right { height: 300px; }
+    h1 { font-size: 2.6rem; } .hero-left { padding: 3rem 1.5rem 2.5rem; }
+    .features { grid-template-columns: 1fr; padding: 3rem 1.5rem; }
+    .search-section { padding: 3rem 1.5rem; }
+    .search-bar { flex-direction: column; }
+    .search-segment { border-right: none; border-bottom: 1px solid var(--border); }
+    .chat-window { width: calc(100vw - 2rem); right: 1rem; }
+  }
+</style>
+</head>
+<body>
+
+<nav>
+  <div class="logo"><div class="logo-dot">P</div>PropIQ</div>
+  <ul>
+    <li><a href="#">Buy</a></li><li><a href="#">Rent</a></li>
+    <li><a href="#">Sell</a></li><li><a href="#">Find Agent</a></li>
+  </ul>
+  <div class="nav-right">
+    <a href="#" class="nav-link">About Us</a>
+    <a href="#" class="nav-link">Add Property</a>
+    <button class="btn-primary" onclick="openChat()">Talk to AI Agent</button>
+  </div>
+</nav>
+
+<section class="hero">
+  <div class="hero-left">
+    <div class="hero-tag">AI-Powered Lead Intelligence</div>
+    <h1>Connecting you <em>to the home</em> you love</h1>
+    <p class="hero-desc">Turning your dreams into reality, one home at a time. Our AI qualifies every buyer instantly — 24/7, no missed leads, automatic follow-up.</p>
+    <div class="hero-actions">
+      <button class="btn-primary" onclick="openChat()">Get Property Recommendations</button>
+      <button class="btn-outline">Browse Listings →</button>
+    </div>
+    <div class="hero-stats">
+      <div class="stat-item"><div class="stat-num">100M+</div><div class="stat-label">Happy buyers</div></div>
+      <div class="stat-item"><div class="stat-num">40M</div><div class="stat-label">Client reviews</div></div>
+      <div class="stat-item"><div class="stat-num">4.8 ★</div><div class="stat-label">Positive rating</div></div>
+    </div>
+  </div>
+  <div class="hero-right">
+    <div class="hero-img-placeholder"></div>
+    <div class="property-card-float">
+      <div class="prop-card-label">Featured Property</div>
+      <div class="prop-card-name">Bismillah House</div>
+      <div class="prop-card-desc">Contemporary home featuring exceptional interior design</div>
+      <div class="prop-card-price">
+        <div class="price-tag">₹ 60,00,000</div>
+        <div class="prop-nav-btns">
+          <button class="prop-nav-btn">←</button>
+          <button class="prop-nav-btn active">→</button>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="features">
+  <div class="features-left">
+    <h2>Trusted by <span>100 Million</span> buyers worldwide</h2>
+    <p>We connect you directly to the listing agent. Our AI qualifies your intent so agents respond faster and close more deals.</p>
+    <div class="feat-stats">
+      <div class="feat-stat"><div class="feat-stat-num">3x</div><div class="feat-stat-label">Faster response</div></div>
+      <div class="feat-stat"><div class="feat-stat-num">89%</div><div class="feat-stat-label">Lead accuracy</div></div>
+      <div class="feat-stat"><div class="feat-stat-num">24/7</div><div class="feat-stat-label">AI availability</div></div>
+    </div>
+  </div>
+  <div class="features-right">
+    <div class="feature-card">
+      <div class="feat-icon">🏘️</div>
+      <div><div class="feat-title">Explore great neighborhoods</div><div class="feat-desc">Video tours, in-depth research, and articles on 20,000 neighborhoods across India and globally.</div></div>
+      <div class="feat-arrow">→</div>
+    </div>
+    <div class="feature-card">
+      <div class="feat-icon">⭐</div>
+      <div><div class="feat-title">Find highly rated properties</div><div class="feat-desc">In-depth reviews and ratings from multiple experts and verified buyers.</div></div>
+      <div class="feat-arrow">→</div>
+    </div>
+    <div class="feature-card">
+      <div class="feat-icon">🤖</div>
+      <div><div class="feat-title">AI Lead Qualification</div><div class="feat-desc">Every visitor scored HOT, WARM, or COLD instantly so your agents focus on buyers ready to close.</div></div>
+      <div class="feat-arrow">→</div>
+    </div>
+  </div>
+</section>
+
+<div class="search-section">
+  <h3>Find your <span>dream home</span></h3>
+  <p>Connecting you with the perfect property for your loved ones</p>
+  <div class="search-bar">
+    <div class="search-segment"><label>Location</label><select><option>Nagpur, Maharashtra</option><option>Mumbai</option><option>Pune</option><option>Hyderabad</option></select></div>
+    <div class="search-segment"><label>Type</label><select><option>Buy</option><option>Rent</option><option>Invest</option></select></div>
+    <div class="search-segment"><label>Budget</label><select><option>Under ₹50L</option><option>₹50L–₹1Cr</option><option>₹1Cr+</option></select></div>
+    <button class="search-btn" onclick="openChat()">🔍 Search</button>
+  </div>
+</div>
+
+<div class="chat-trigger">
+  <div class="chat-bubble-hint" id="chatHint">👋 Hi! Looking for a property?</div>
+  <button class="chat-fab" onclick="toggleChat()">
+    <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>
+    <div class="notif-dot"></div>
+  </button>
+</div>
+
+<div class="chat-window hidden" id="chatWindow">
+  <div class="chat-header">
+    <div class="chat-avatar">🤖</div>
+    <div class="chat-header-info">
+      <div class="chat-agent-name">PropIQ AI Agent</div>
+      <div class="chat-agent-status">Online — Instant replies</div>
+    </div>
+    <div class="score-badge" id="scoreBadge"></div>
+    <button class="chat-close" onclick="toggleChat()">✕</button>
+  </div>
+  <div class="chat-messages" id="chatMessages"></div>
+  <div class="chat-input-area">
+    <input type="text" class="chat-input" id="chatInput" placeholder="Type a message..." onkeydown="handleKey(event)">
+    <button class="chat-send" id="sendBtn" onclick="sendUserMessage()">
+      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="22" y1="2" x2="11" y2="13"/><polygon points="22 2 15 22 11 13 2 9 22 2"/></svg>
+    </button>
+  </div>
+</div>
+
+<script>
+  let chatOpen = false, chatStarted = false;
+  let conversationHistory = [], currentScore = null;
+
+  function toggleChat() {
+    chatOpen = !chatOpen;
+    document.getElementById('chatWindow').classList.toggle('hidden', !chatOpen);
+    document.getElementById('chatHint').style.display = chatOpen ? 'none' : 'block';
+    if (chatOpen && !chatStarted) { chatStarted = true; startConversation(); }
+  }
+  function openChat() { if (!chatOpen) toggleChat(); }
+
+  function addMessage(role, content, options = null) {
+    const msgs = document.getElementById('chatMessages');
+    const msg = document.createElement('div');
+    msg.className = `msg ${role}`;
+    const av = document.createElement('div');
+    av.className = 'msg-avatar';
+    av.textContent = role === 'bot' ? '🤖' : '👤';
+    const bubble = document.createElement('div');
+    bubble.className = 'msg-bubble';
+    bubble.innerHTML = content.replace(/\n/g, '<br>');
+    if (role === 'bot') { msg.appendChild(av); msg.appendChild(bubble); }
+    else { msg.appendChild(bubble); msg.appendChild(av); }
+    msgs.appendChild(msg);
+    if (options) {
+      const row = document.createElement('div');
+      row.className = 'options-row';
+      options.forEach(opt => {
+        const btn = document.createElement('button');
+        btn.className = 'opt-btn';
+        btn.textContent = opt;
+        btn.onclick = () => {
+          row.querySelectorAll('.opt-btn').forEach(b => { b.disabled = true; b.classList.remove('selected'); });
+          btn.classList.add('selected');
+          setTimeout(() => sendOption(opt), 100);
+        };
+        row.appendChild(btn);
+      });
+      msgs.appendChild(row);
+    }
+    msgs.scrollTop = msgs.scrollHeight;
+  }
+
+  function addTyping() {
+    const msgs = document.getElementById('chatMessages');
+    const t = document.createElement('div');
+    t.className = 'typing'; t.id = 'typingIndicator';
+    t.innerHTML = '<div class="msg-avatar">🤖</div><div class="typing-dots"><div class="typing-dot"></div><div class="typing-dot"></div><div class="typing-dot"></div></div>';
+    msgs.appendChild(t);
+    msgs.scrollTop = msgs.scrollHeight;
+  }
+  function removeTyping() { const t = document.getElementById('typingIndicator'); if (t) t.remove(); }
+
+  function showScoreCard(sd) {
+    const msgs = document.getElementById('chatMessages');
+    const card = document.createElement('div');
+    card.className = 'score-card';
+    const tc = sd.tier.toLowerCase();
+    const colors = { hot:'#e84a3a', warm:'#e8961a', cold:'#3a8ee8' };
+    card.innerHTML = `<div class="score-card-title">Lead Intelligence Report</div><div class="score-tier"><div class="score-tier-badge tier-${tc}">${sd.tier}</div><span style="font-size:0.8rem;color:var(--muted)">Score: <strong>${sd.score}/100</strong></span></div><div class="score-bar-wrap"><div class="score-bar" style="width:0%;background:${colors[tc]}" data-width="${sd.score}%"></div></div><div class="score-detail">${sd.reason}</div><div style="margin-top:0.6rem;padding-top:0.6rem;border-top:1px solid var(--border);font-size:0.78rem;color:var(--muted)">${sd.summary}</div>`;
+    msgs.appendChild(card);
+    msgs.scrollTop = msgs.scrollHeight;
+    setTimeout(() => { const bar = card.querySelector('.score-bar'); if (bar) bar.style.width = bar.dataset.width; }, 100);
+    const badge = document.getElementById('scoreBadge');
+    badge.className = `score-badge show ${tc}`;
+    badge.textContent = `🔥 ${sd.tier}`;
+    currentScore = sd;
+  }
+
+  function parseScore(text) {
+    const m = text.match(/SCORE:(\{[^}]+\})/);
+    if (m) { try { return JSON.parse(m[1]); } catch(e) {} }
+    return null;
+  }
+  function cleanText(text) { return text.replace(/SCORE:\{[^}]+\}/g, '').trim(); }
+
+  function detectOptions(text) {
+    const l = text.toLowerCase();
+    if (l.includes('buy') && l.includes('invest') && l.includes('rent')) return ['🏠 Buy','📈 Invest','🔑 Rent'];
+    if (l.includes('50l') || l.includes('budget')) return ['Under ₹50L','₹50L–₹1Cr','₹1Cr+'];
+    if (l.includes('immediately') || l.includes('timeline') || l.includes('planning')) return ['Immediately','1–3 months','Just exploring'];
+    return null;
+  }
+
+  async function callAI(userMsg) {
+    conversationHistory.push({ role:'user', content:userMsg });
+    addTyping();
+    document.getElementById('sendBtn').disabled = true;
+    try {
+      const res = await fetch('/api/chat', {
+        method:'POST',
+        headers:{'Content-Type':'application/json'},
+        body: JSON.stringify({ messages: conversationHistory })
+      });
+      const data = await res.json();
+      const rawText = data.content?.[0]?.text || "Something went wrong. Please try again.";
+      const scoreData = parseScore(rawText);
+      const cleanMsg = cleanText(rawText);
+      conversationHistory.push({ role:'assistant', content:rawText });
+      removeTyping();
+      addMessage('bot', cleanMsg, detectOptions(cleanMsg));
+      if (scoreData && !currentScore) setTimeout(() => showScoreCard(scoreData), 400);
+    } catch(err) {
+      removeTyping();
+      addMessage('bot', 'Connection issue. Please try again.');
+    }
+    document.getElementById('sendBtn').disabled = false;
+    document.getElementById('chatInput').focus();
+  }
+
+  async function startConversation() { await callAI('Hello, I just opened the chat on the PropIQ website.'); }
+  function sendUserMessage() { const i = document.getElementById('chatInput'); const m = i.value.trim(); if (!m) return; i.value=''; addMessage('user', m); callAI(m); }
+  function sendOption(text) { addMessage('user', text); callAI(text); }
+  function handleKey(e) { if (e.key==='Enter') sendUserMessage(); }
+  setTimeout(() => { const h = document.getElementById('chatHint'); if(h) h.style.opacity='0'; }, 5000);
+</script>
+</body>
+</html>
