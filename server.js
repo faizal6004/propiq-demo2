@@ -37,29 +37,35 @@ app.post('/api/chat', async (req, res) => {
     return res.status(400).json({ error: 'Invalid messages format' });
   }
 
+  const apiKey = process.env.GEMINI_API_KEY;
+  console.log('API Key present:', !!apiKey);
+  console.log('API Key starts with:', apiKey ? apiKey.substring(0, 8) : 'MISSING');
+
   try {
-    // Convert messages to Gemini format
     const geminiMessages = messages.map(m => ({
       role: m.role === 'assistant' ? 'model' : 'user',
       parts: [{ text: m.content }]
     }));
 
-    const response = await fetch(
-      `https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent?key=${process.env.GEMINI_API_KEY}`,
-      {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({
-          system_instruction: { parts: [{ text: SYSTEM_PROMPT }] },
-          contents: geminiMessages,
-          generationConfig: { maxOutputTokens: 1000, temperature: 0.7 }
-        })
-      }
-    );
+    const url = `https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent?key=${apiKey}`;
+    console.log('Calling Gemini URL (without key):', url.split('?')[0]);
+
+    const response = await fetch(url, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        system_instruction: { parts: [{ text: SYSTEM_PROMPT }] },
+        contents: geminiMessages,
+        generationConfig: { maxOutputTokens: 1000, temperature: 0.7 }
+      })
+    });
 
     const data = await response.json();
+    console.log('Gemini response status:', response.status);
+    console.log('Gemini response:', JSON.stringify(data).substring(0, 300));
 
     if (data.error) {
+      console.error('Gemini error:', data.error);
       return res.status(500).json({ error: data.error.message });
     }
 
@@ -67,13 +73,13 @@ app.post('/api/chat', async (req, res) => {
     res.json({ content: [{ text }] });
 
   } catch (err) {
-    console.error('API Error:', err);
-    res.status(500).json({ error: 'Failed to connect to AI service' });
+    console.error('Fetch error:', err.message);
+    res.status(500).json({ error: err.message });
   }
 });
 
 app.get('*', (req, res) => {
-  res.sendFile(path.join(__dirname, "index.html"));
+  res.sendFile(path.join(__dirname, 'index.html'));
 });
 
 const PORT = process.env.PORT || 3000;
